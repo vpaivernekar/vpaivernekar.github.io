@@ -6,10 +6,173 @@
         
     </head>
     <body>
-        <p id='time'>07:00</p>  
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Abacus Practice</a>
+            <h3 id='time' class='nav-item ml-auto'>Timer: 01:00</h3>  
+        </nav>
         
+        <div class="container">
+            <div id='practicetest'>
+                <div class="row">
+                    <div class="col-sm">
+
+                    </div>
+                    <div class="col-sm" style="text-align: center;">
+                        <h3 id='n1'>1</h3>
+                        <h3 id='n2'>2</h3>
+                        <h3 id='n3'>3</h3>
+                        <h3 id='n4'>4</h3>
+                        <h3 id='n5'>5</h3>
+                        <h3 id='n6'>6</h3>
+                        <h3 id='n7'>7</h3>
+                        <h3 id='n8'>8</h3>
+                    </div>
+                    <div class="col-sm">
+
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-sm">
+
+                    </div>
+                    <div class="col-sm" style="text-align: center;">
+                        <button id='b1' style="width:200px;" class='btn btn-primary'>1</button>
+                        <br>
+                        <br>
+                        <button id='b2' style="width:200px;" class='btn btn-primary'>2</button>
+                        <br>
+                        <br>
+                        <button id='b3' style="width:200px;" class='btn btn-primary'>3</button>
+                        <br>
+                        <br>
+                        <button id='b4' style="width:200px;" class='btn btn-primary'>4</button>
+                        <br>
+                        <br>
+                    </div>
+                    <div class="col-sm">
+
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-sm">
+
+                    </div>
+                    <div class="col-sm" style="text-align: center;">
+                        <button class='btn btn-success' onclick="generateNextQuestion()">Next</button>
+                    </div>
+                    <div class="col-sm">
+
+                    </div>
+                </div>
+            </div>
+        </div>
         
-        
+        <script>
+            function getRndInteger(min, max) {
+              return Math.floor(Math.random() * (max - min)) + min;
+            }
+            
+            function generateNextQuestion() {
+                
+                var totalNumbers = getRndInteger(3, 9);
+                var number1 = getRndInteger(-9, 10);
+                var number2 = getRndInteger(-9, 10);
+                var number3 = getRndInteger(-9, 10);
+                var number4 = getRndInteger(-9, 10);
+                var number5 = getRndInteger(-9, 10);
+                var number6 = getRndInteger(-9, 10);
+                var number7 = getRndInteger(-9, 10);
+                var number8 = getRndInteger(-9, 10);
+                var correctAnswerButton = getRndInteger(1, 5);
+                
+                sum = 0;
+                
+                $('#n1').hide();
+                $('#n2').hide();
+                $('#n3').hide();
+                $('#n4').hide();
+                $('#n5').hide();
+                $('#n6').hide();
+                $('#n7').hide();
+                $('#n8').hide();
+                
+                if (totalNumbers > 0) {
+                    $('#n1').show();
+                    $('#n1').text(number1);
+                    sum = sum + number1;
+                }
+                
+                if (totalNumbers > 1) {
+                    $('#n2').show();
+                    $('#n2').text(number2);
+                    sum = sum + number2;
+                }
+                
+                if (totalNumbers > 2) {
+                    $('#n3').show();
+                    $('#n3').text(number3);
+                    sum = sum + number3;
+                }
+                
+                if (totalNumbers > 3) {
+                    $('#n4').show();
+                    $('#n4').text(number4);
+                    sum = sum + number4;
+                }
+                
+                if (totalNumbers > 4) {
+                    $('#n5').show();
+                    $('#n5').text(number5);
+                    sum = sum + number5;
+                }
+                
+                if (totalNumbers > 5) {
+                    $('#n6').show();
+                    $('#n6').text(number6);
+                    sum = sum + number6;
+                }
+                
+                if (totalNumbers > 6) {
+                    $('#n7').show();
+                    $('#n7').text(number7);
+                    sum = sum + number7;
+                }
+                
+                if (totalNumbers > 7) {
+                    $('#n8').show();
+                    $('#n8').text(number8);
+                    sum = sum + number8;
+                }
+                
+                if (correctAnswerButton == 1) {
+                    $('#b1').text(sum);
+                    $('#b2').text(getRndInteger(-9, 10));
+                    $('#b3').text(getRndInteger(-9, 10));
+                    $('#b4').text(getRndInteger(-9, 10));
+                }
+                else if (correctAnswerButton == 2) {
+                    $('#b1').text(getRndInteger(-9, 10));
+                    $('#b2').text(sum);
+                    $('#b3').text(getRndInteger(-9, 10));
+                    $('#b4').text(getRndInteger(-9, 10));
+                } 
+                else if (correctAnswerButton == 3) {
+                    $('#b1').text(getRndInteger(-9, 10));
+                    $('#b2').text(getRndInteger(-9, 10));
+                    $('#b3').text(sum);
+                    $('#b4').text(getRndInteger(-9, 10));
+                }
+                else {
+                    $('#b1').text(getRndInteger(-9, 10));
+                    $('#b2').text(getRndInteger(-9, 10));
+                    $('#b3').text(getRndInteger(-9, 10));
+                    $('#b4').text(sum);
+                }
+                
+            }
+        </script>
         
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -25,16 +188,16 @@
                     minutes = minutes < 10 ? "0" + minutes : minutes;
                     seconds = seconds < 10 ? "0" + seconds : seconds;
 
-                    display.textContent = minutes + ":" + seconds;
+                    display.textContent = 'Timer: ' + minutes + ":" + seconds;
 
                     if (--timer < 0) {
-                        timer = duration;
+                        timer = 0;
                     }
                 }, 1000);
             }
 
             window.onload = function () {
-                var sevenMinutes = 60 * 7,
+                var sevenMinutes = 60 * 1,
                     display = document.querySelector('#time');
                 startTimer(sevenMinutes, display);
             };
