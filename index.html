@@ -8,7 +8,7 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="#">Abacus Practice</a>
-            <h3 id='time' class='nav-item ml-auto'>Timer: 01:00</h3>  
+            <h3 id='time' class='nav-item ml-auto'></h3>  
         </nav>
         
         <div class="container">
@@ -21,7 +21,7 @@
                     <div class="col-sm">
                       <div class="form-group">
                         <label for="username">User Name</label>
-                        <input type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="Enter User Name">
+                        <input type="text" class="form-control" id="username" aria-describedby="userNameHelp" placeholder="Enter User Name">
                       </div>
                       <button id='nextButton' class='btn btn-success' onclick="nextButtonClick()">Next</button>
                     </div>
@@ -36,6 +36,8 @@
 
                     </div>
                     <div class="col-sm" style="text-align: center;">
+                        <h2 id='qno'></h2>
+                        <br>
                         <h3 id='n1'>1</h3>
                         <h3 id='n2'>2</h3>
                         <h3 id='n3'>3</h3>
@@ -109,10 +111,11 @@
             const MAX_QUESTION_COUNT = 100;
             const TOTAL_TIME = 7;
             var userName = '';
+            var myTimer;
             
             function startTimer(duration, display) {
                 var timer = duration, minutes, seconds;
-                setInterval(function () {
+                myTimer = setInterval(function () {
                     minutes = parseInt(timer / 60, 10);
                     seconds = parseInt(timer % 60, 10);
 
@@ -123,11 +126,12 @@
 
                     if (--timer < 0 || questionCounter > MAX_QUESTION_COUNT) {
                         
+                        clearInterval(myTimer);
+                        
                         if (questionCounter > MAX_QUESTION_COUNT) {
                             questionCounter = MAX_QUESTION_COUNT;
                         }
                         
-                        timer = 0;
                         $('#practicetest').hide();
                         $('#score').show();
                         $('#userinfo').hide();
@@ -136,6 +140,8 @@
                         $('#questions').text('Total Questions Given:' + questionCounter.toString());
                         $('#finalscore').text('Final Score:' + score.toString());
                         $('#incorrect').text('Number of incorrect answers:' + (questionCounter - score).toString());
+                        
+                        timer = 0;
                         
                         if (score == MAX_QUESTION_COUNT) {
                             $('#recommendation').text('Perfect. Try to break your own record in shorter time.');
@@ -157,6 +163,7 @@
             $(document).ready(function(){
               $('#practicetest').hide();
               $('#score').hide();
+              $('#time').text('Timer: ' + TOTAL_TIME.toString() + ':00');
               $('#userinfo').show();
             });
 
@@ -171,7 +178,9 @@
                     display = document.querySelector('#time');
                 startTimer(tMinutes, display);
                 
-                generateNextQuestion();
+                if (questionCounter < MAX_QUESTION_COUNT) {
+                    generateNextQuestion();
+                }
             }
             
             function checkAnswer(btn) {
@@ -188,6 +197,12 @@
             
             function generateNextQuestion() {
                 questionCounter = questionCounter + 1;
+                if (questionCounter > MAX_QUESTION_COUNT) {
+                    return;
+                }
+                
+                $('#qno').text('Question ' + questionCounter.toString());
+                
                 sum = 0;
                 
                 var totalNumbers = getRndInteger(3, 9);
@@ -262,26 +277,26 @@
                 
                 if (correctAnswerButton == 1) {
                     $('#b1').text(sum);
-                    $('#b2').text(getRndInteger(-1 * sum, sum + 5));
-                    $('#b3').text(getRndInteger(-1 * sum, sum + 5));
-                    $('#b4').text(getRndInteger(-1 * sum, sum + 5));
+                    $('#b2').text(getRndInteger(sum - 1, sum + 5));
+                    $('#b3').text(getRndInteger(sum - 1, sum + 5));
+                    $('#b4').text(getRndInteger(sum - 1, sum + 5));
                 }
                 else if (correctAnswerButton == 2) {
-                    $('#b1').text(getRndInteger(-1 * sum, sum + 5));
+                    $('#b1').text(getRndInteger(sum - 1, sum + 5));
                     $('#b2').text(sum);
-                    $('#b3').text(getRndInteger(-1 * sum, sum + 5));
-                    $('#b4').text(getRndInteger(-1 * sum, sum + 5));
+                    $('#b3').text(getRndInteger(sum - 1, sum + 5));
+                    $('#b4').text(getRndInteger(sum - 1, sum + 5));
                 } 
                 else if (correctAnswerButton == 3) {
-                    $('#b1').text(getRndInteger(-1 * sum, sum + 5));
-                    $('#b2').text(getRndInteger(-1 * sum, sum + 5));
+                    $('#b1').text(getRndInteger(sum - 1, sum + 5));
+                    $('#b2').text(getRndInteger(sum - 1, sum + 5));
                     $('#b3').text(sum);
-                    $('#b4').text(getRndInteger(-1 * sum, sum + 5));
+                    $('#b4').text(getRndInteger(sum - 1, sum + 5));
                 }
                 else {
-                    $('#b1').text(getRndInteger(-1 * sum, sum + 5));
-                    $('#b2').text(getRndInteger(-1 * sum, sum + 5));
-                    $('#b3').text(getRndInteger(-1 * sum, sum + 5));
+                    $('#b1').text(getRndInteger(sum - 1, sum + 5));
+                    $('#b2').text(getRndInteger(sum - 1, sum + 5));
+                    $('#b3').text(getRndInteger(sum - 1, sum + 5));
                     $('#b4').text(sum);
                 }
             }
