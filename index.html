@@ -275,31 +275,28 @@
                     sum = sum + n8;
                 }
                 
-                var wrongAnswer1 = getRndInteger(sum + 2, sum + 30);
-                var wrongAnswer2 = getRndInteger(0, sum - 2);
-                
                 if (correctAnswerButton == 1) {
                     $('#b1').text(sum);
-                    $('#b2').text(wrongAnswer1.toString());
-                    $('#b3').text((wrongAnswer1 + 1).toString());
-                    $('#b4').text(wrongAnswer2.toString());
+                    $('#b2').text(sum + 1);
+                    $('#b3').text(sum - 1);
+                    $('#b4').text(sum - 2);
                 }
                 else if (correctAnswerButton == 2) {
-                    $('#b1').text(wrongAnswer2.toString());
+                    $('#b1').text(sum + 1);
                     $('#b2').text(sum);
-                    $('#b3').text((wrongAnswer2 + 1).toString());
-                    $('#b4').text(wrongAnswer1.toString());
+                    $('#b3').text(sum - 2);
+                    $('#b4').text(sum - 1);
                 } 
                 else if (correctAnswerButton == 3) {
-                    $('#b1').text((wrongAnswer2 + 1).toString());
-                    $('#b2').text(wrongAnswer1.toString());
+                    $('#b1').text(sum - 2);
+                    $('#b2').text(sum - 3);
                     $('#b3').text(sum);
-                    $('#b4').text(wrongAnswer2.toString());
+                    $('#b4').text(sum + 1);
                 }
                 else {
-                    $('#b1').text((wrongAnswer1 + 1).toString());
-                    $('#b2').text(wrongAnswer2.toString());
-                    $('#b3').text(wrongAnswer1.toString());
+                    $('#b1').text(sum + 1);
+                    $('#b2').text(sum + 2);
+                    $('#b3').text(sum - 2);
                     $('#b4').text(sum);
                 }
             }
