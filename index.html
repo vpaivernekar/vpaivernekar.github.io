@@ -275,28 +275,30 @@
                     sum = sum + n8;
                 }
                 
+                var wrongAnswer = getRndInteger(sum + 1, sum + 30);
+                
                 if (correctAnswerButton == 1) {
                     $('#b1').text(sum);
-                    $('#b2').text(getRndInteger(sum - 1, sum + 5));
-                    $('#b3').text(getRndInteger(sum - 1, sum + 5));
-                    $('#b4').text(getRndInteger(sum - 1, sum + 5));
+                    $('#b2').text(wrongAnswer.toString());
+                    $('#b3').text((wrongAnswer + 1).toString());
+                    $('#b4').text((wrongAnswer + 2).toString());
                 }
                 else if (correctAnswerButton == 2) {
-                    $('#b1').text(getRndInteger(sum - 1, sum + 5));
+                    $('#b1').text(wrongAnswer.toString());
                     $('#b2').text(sum);
-                    $('#b3').text(getRndInteger(sum - 1, sum + 5));
-                    $('#b4').text(getRndInteger(sum - 1, sum + 5));
+                    $('#b3').text((wrongAnswer + 1).toString());
+                    $('#b4').text((wrongAnswer + 2).toString());
                 } 
                 else if (correctAnswerButton == 3) {
-                    $('#b1').text(getRndInteger(sum - 1, sum + 5));
-                    $('#b2').text(getRndInteger(sum - 1, sum + 5));
+                    $('#b1').text((wrongAnswer + 1).toString());
+                    $('#b2').text(wrongAnswer.toString());
                     $('#b3').text(sum);
-                    $('#b4').text(getRndInteger(sum - 1, sum + 5));
+                    $('#b4').text((wrongAnswer + 2).toString());
                 }
                 else {
-                    $('#b1').text(getRndInteger(sum - 1, sum + 5));
-                    $('#b2').text(getRndInteger(sum - 1, sum + 5));
-                    $('#b3').text(getRndInteger(sum - 1, sum + 5));
+                    $('#b1').text((wrongAnswer + 2).toString());
+                    $('#b2').text((wrongAnswer + 1).toString());
+                    $('#b3').text(wrongAnswer.toString());
                     $('#b4').text(sum);
                 }
             }
