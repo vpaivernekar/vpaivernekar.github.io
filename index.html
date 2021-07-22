@@ -2,8 +2,8 @@
 <html>
     <head>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        
-        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -12,6 +12,24 @@
         </nav>
         
         <div class="container">
+            <div id='userinfo'>
+                <br>
+                <div class="row">
+                    <div class="col-sm">
+
+                    </div>
+                    <div class="col-sm">
+                      <div class="form-group">
+                        <label for="username">User Name</label>
+                        <input type="text" class="form-control" id="username" aria-describedby="emailHelp" placeholder="Enter User Name">
+                      </div>
+                      <button id='nextButton' class='btn btn-success' onclick="nextButtonClick()">Next</button>
+                    </div>
+                    <div class="col-sm">
+
+                    </div>
+                </div>
+            </div>
             <div id='practicetest'>
                 <div class="row">
                     <div class="col-sm">
@@ -37,16 +55,16 @@
 
                     </div>
                     <div class="col-sm" style="text-align: center;">
-                        <button id='b1' style="width:200px;" class='btn btn-primary'>1</button>
+                        <button id='b1' style="width:200px;" class='btn btn-primary' onclick='checkAnswer(this)'>1</button>
                         <br>
                         <br>
-                        <button id='b2' style="width:200px;" class='btn btn-primary'>2</button>
+                        <button id='b2' style="width:200px;" class='btn btn-primary' onclick='checkAnswer(this)'>2</button>
                         <br>
                         <br>
-                        <button id='b3' style="width:200px;" class='btn btn-primary'>3</button>
+                        <button id='b3' style="width:200px;" class='btn btn-primary' onclick='checkAnswer(this)'>3</button>
                         <br>
                         <br>
-                        <button id='b4' style="width:200px;" class='btn btn-primary'>4</button>
+                        <button id='b4' style="width:200px;" class='btn btn-primary' onclick='checkAnswer(this)'>4</button>
                         <br>
                         <br>
                     </div>
@@ -54,13 +72,23 @@
 
                     </div>
                 </div>
-                
+            </div>
+            <div id='score'>
+                <br>
                 <div class="row">
                     <div class="col-sm">
 
                     </div>
-                    <div class="col-sm" style="text-align: center;">
-                        <button class='btn btn-success' onclick="generateNextQuestion()">Next</button>
+                    <div class="col-sm">
+                        <p id='addressuser'></p>
+                        <br>
+                        <p id='questions'></p>
+                        <br>
+                        <p id='finalscore'></p>
+                        <br>
+                        <p id='incorrect'></p>
+                        <br>
+                        <p id='recommendation'></p>
                     </div>
                     <div class="col-sm">
 
@@ -69,25 +97,111 @@
             </div>
         </div>
         
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        
         <script>
+            var correctAnswerButton;
+            var score = 0;
+            var sum = 0;
+            var questionCounter = 0;
+            const MAX_QUESTION_COUNT = 100;
+            const TOTAL_TIME = 7;
+            var userName = '';
+            
+            function startTimer(duration, display) {
+                var timer = duration, minutes, seconds;
+                setInterval(function () {
+                    minutes = parseInt(timer / 60, 10);
+                    seconds = parseInt(timer % 60, 10);
+
+                    minutes = minutes < 10 ? "0" + minutes : minutes;
+                    seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                    display.textContent = 'Timer: ' + minutes + ":" + seconds;
+
+                    if (--timer < 0 || questionCounter > MAX_QUESTION_COUNT) {
+                        
+                        if (questionCounter > MAX_QUESTION_COUNT) {
+                            questionCounter = MAX_QUESTION_COUNT;
+                        }
+                        
+                        timer = 0;
+                        $('#practicetest').hide();
+                        $('#score').show();
+                        $('#userinfo').hide();
+                        
+                        $('#addressuser').text('Dear ' + userName + ', below is your score:');
+                        $('#questions').text('Total Questions Given:' + questionCounter.toString());
+                        $('#finalscore').text('Final Score:' + score.toString());
+                        $('#incorrect').text('Number of incorrect answers:' + (questionCounter - score).toString());
+                        
+                        if (score == MAX_QUESTION_COUNT) {
+                            $('#recommendation').text('Perfect. Try to break your own record in shorter time.');
+                        }
+                        else if (score >= MAX_QUESTION_COUNT - 5) {
+                            $('#recommendation').text('Very good. You are almost there. More practice will take you to a perfect score.');
+                        }
+                        else if (score >= MAX_QUESTION_COUNT - 10) {
+                            $('#recommendation').text('Good. You can get to a perfect score. Try again.');
+                        }
+                        else {
+                            $('#recommendation').text('Practice more and you will get there.');
+                        }
+                        
+                    }
+                }, 1000);
+            }
+            
+            $(document).ready(function(){
+              $('#practicetest').hide();
+              $('#score').hide();
+              $('#userinfo').show();
+            });
+
+            
+            function nextButtonClick() {
+                userName = $('#username').val();
+                $('#userinfo').hide();
+                $('#score').hide();
+                $('#practicetest').show();
+                
+                var tMinutes = 60 * TOTAL_TIME,
+                    display = document.querySelector('#time');
+                startTimer(tMinutes, display);
+                
+                generateNextQuestion();
+            }
+            
+            function checkAnswer(btn) {
+                if (sum.toString() == btn.textContent) {
+                    score = score + 1;
+                }
+                
+                generateNextQuestion();
+            }
+            
             function getRndInteger(min, max) {
               return Math.floor(Math.random() * (max - min)) + min;
             }
             
             function generateNextQuestion() {
+                questionCounter = questionCounter + 1;
+                sum = 0;
                 
                 var totalNumbers = getRndInteger(3, 9);
-                var number1 = getRndInteger(-9, 10);
-                var number2 = getRndInteger(-9, 10);
-                var number3 = getRndInteger(-9, 10);
-                var number4 = getRndInteger(-9, 10);
-                var number5 = getRndInteger(-9, 10);
-                var number6 = getRndInteger(-9, 10);
-                var number7 = getRndInteger(-9, 10);
-                var number8 = getRndInteger(-9, 10);
-                var correctAnswerButton = getRndInteger(1, 5);
+               
+                var n1 = getRndInteger(0, 10);
+                var n2 = getRndInteger(-1 * (n1), 10);
+                var n3 = getRndInteger(-1 * Math.floor((n1 + n2)/10), 10);
+                var n4 = getRndInteger(-1 * Math.floor((n1 + n2 + n3)/10), 10);
+                var n5 = getRndInteger(-1 * Math.floor((n1 + n2 + n3 + n4)/10), 10);
+                var n6 = getRndInteger(-1 * Math.floor((n1 + n2 + n3 + n4 + n5)/10), 10);
+                var n7 = getRndInteger(-1 * Math.floor((n1 + n2 + n3 + n4 + n5 + n6)/10), 10);
+                var n8 = getRndInteger(-1 * Math.floor((n1 + n2 + n3 + n4 + n5 + n6 + n7)/10), 10);
                 
-                sum = 0;
+                correctAnswerButton = getRndInteger(1, 5);
                 
                 $('#n1').hide();
                 $('#n2').hide();
@@ -100,109 +214,81 @@
                 
                 if (totalNumbers > 0) {
                     $('#n1').show();
-                    $('#n1').text(number1);
-                    sum = sum + number1;
+                    $('#n1').text(n1);
+                    sum = sum + n1;
                 }
                 
                 if (totalNumbers > 1) {
                     $('#n2').show();
-                    $('#n2').text(number2);
-                    sum = sum + number2;
+                    $('#n2').text(n2);
+                    sum = sum + n2;
                 }
                 
                 if (totalNumbers > 2) {
                     $('#n3').show();
-                    $('#n3').text(number3);
-                    sum = sum + number3;
+                    $('#n3').text(n3);
+                    sum = sum + n3;
                 }
                 
                 if (totalNumbers > 3) {
                     $('#n4').show();
-                    $('#n4').text(number4);
-                    sum = sum + number4;
+                    $('#n4').text(n4);
+                    sum = sum + n4;
                 }
                 
                 if (totalNumbers > 4) {
                     $('#n5').show();
-                    $('#n5').text(number5);
-                    sum = sum + number5;
+                    $('#n5').text(n5);
+                    sum = sum + n5;
                 }
                 
                 if (totalNumbers > 5) {
                     $('#n6').show();
-                    $('#n6').text(number6);
-                    sum = sum + number6;
+                    $('#n6').text(n6);
+                    sum = sum + n6;
                 }
                 
                 if (totalNumbers > 6) {
                     $('#n7').show();
-                    $('#n7').text(number7);
-                    sum = sum + number7;
+                    $('#n7').text(n7);
+                    sum = sum + n7;
                 }
                 
                 if (totalNumbers > 7) {
                     $('#n8').show();
-                    $('#n8').text(number8);
-                    sum = sum + number8;
+                    $('#n8').text(n8);
+                    sum = sum + n8;
                 }
                 
                 if (correctAnswerButton == 1) {
                     $('#b1').text(sum);
-                    $('#b2').text(getRndInteger(-9, 10));
-                    $('#b3').text(getRndInteger(-9, 10));
-                    $('#b4').text(getRndInteger(-9, 10));
+                    $('#b2').text(getRndInteger(-1 * sum, sum + 5));
+                    $('#b3').text(getRndInteger(-1 * sum, sum + 5));
+                    $('#b4').text(getRndInteger(-1 * sum, sum + 5));
                 }
                 else if (correctAnswerButton == 2) {
-                    $('#b1').text(getRndInteger(-9, 10));
+                    $('#b1').text(getRndInteger(-1 * sum, sum + 5));
                     $('#b2').text(sum);
-                    $('#b3').text(getRndInteger(-9, 10));
-                    $('#b4').text(getRndInteger(-9, 10));
+                    $('#b3').text(getRndInteger(-1 * sum, sum + 5));
+                    $('#b4').text(getRndInteger(-1 * sum, sum + 5));
                 } 
                 else if (correctAnswerButton == 3) {
-                    $('#b1').text(getRndInteger(-9, 10));
-                    $('#b2').text(getRndInteger(-9, 10));
+                    $('#b1').text(getRndInteger(-1 * sum, sum + 5));
+                    $('#b2').text(getRndInteger(-1 * sum, sum + 5));
                     $('#b3').text(sum);
-                    $('#b4').text(getRndInteger(-9, 10));
+                    $('#b4').text(getRndInteger(-1 * sum, sum + 5));
                 }
                 else {
-                    $('#b1').text(getRndInteger(-9, 10));
-                    $('#b2').text(getRndInteger(-9, 10));
-                    $('#b3').text(getRndInteger(-9, 10));
+                    $('#b1').text(getRndInteger(-1 * sum, sum + 5));
+                    $('#b2').text(getRndInteger(-1 * sum, sum + 5));
+                    $('#b3').text(getRndInteger(-1 * sum, sum + 5));
                     $('#b4').text(sum);
                 }
-                
             }
         </script>
         
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         
-        <script>
-            function startTimer(duration, display) {
-                var timer = duration, minutes, seconds;
-                setInterval(function () {
-                    minutes = parseInt(timer / 60, 10);
-                    seconds = parseInt(timer % 60, 10);
-
-                    minutes = minutes < 10 ? "0" + minutes : minutes;
-                    seconds = seconds < 10 ? "0" + seconds : seconds;
-
-                    display.textContent = 'Timer: ' + minutes + ":" + seconds;
-
-                    if (--timer < 0) {
-                        timer = 0;
-                    }
-                }, 1000);
-            }
-
-            window.onload = function () {
-                var sevenMinutes = 60 * 1,
-                    display = document.querySelector('#time');
-                startTimer(sevenMinutes, display);
-            };
-
-        </script>
+        
         
     </body>
 </html>
