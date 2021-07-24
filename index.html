@@ -109,6 +109,7 @@
                                   <th>#</th>
                                   <th>Question</th>
                                   <th>Status</th>
+                                  <th>Your Answer</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -194,7 +195,8 @@
                           else {
                             r = r + "<td style='color:red;'>" + value[1] + '</td>';
                           }
-                        
+                          
+                          r = r + '<td>' + value[2] + '</td>'
                           r = r + '</tr>';
                           $('#finalreport tbody').append(r);
                         });
@@ -263,10 +265,10 @@
             function checkAnswer(btn) {
                 if (sum.toString() == btn.textContent) {
                     score = score + 1;
-                    report.push([currentQuestion, 'correct']);
+                    report.push([currentQuestion, 'correct', btn.textContent]);
                 }
                 else {
-                    report.push([currentQuestion, 'wrong']);
+                    report.push([currentQuestion, 'wrong', btn.textContent]);
                 }
                 
                 $(btn).blur();
