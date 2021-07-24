@@ -21,7 +21,16 @@
                     <div class="col-sm">
                       <div class="form-group">
                         <label for="username">User Name</label>
-                        <input type="text" class="form-control" id="username" aria-describedby="userNameHelp" placeholder="Enter User Name">
+                        <input type="text" class="form-control" id="username" aria-describedby="userNameHelp" placeholder="Enter User Name"></input>
+                        <br>
+                        <label for="questioncount">Number of questions in the exam</label>
+                        <input type="text" class="form-control" id="questioncount" aria-describedby="questioncountHelp" value="100"></input>
+                        <br>
+                        <label for="examtime">Total time for the exam in minutes</label>
+                        <input type="text" class="form-control" id="examtime" aria-describedby="examtimeHelp" value="7"></input>
+                        <br>
+                        <label for="numrows">Enter maximum numbers in a row</label>
+                        <input type="text" class="form-control" id="numrows" aria-describedby="numrowsHelp" value="8"></input>
                       </div>
                       <button id='nextButton' class='btn btn-success' onclick="nextButtonClick()">Next</button>
                     </div>
@@ -109,8 +118,9 @@
             var score = 0;
             var sum = 0;
             var questionCounter = 0;
-            const MAX_QUESTION_COUNT = 100;
-            const TOTAL_TIME = 7;
+            var MAX_QUESTION_COUNT;
+            var TOTAL_TIME;
+            var ROW_NUM;
             var userName = '';
             var myTimer;
             
@@ -144,13 +154,15 @@
                         
                         timer = 0;
                         
-                        if (score == MAX_QUESTION_COUNT) {
+                        var percentage = Math.round((score) * 100 / MAX_QUESTION_COUNT);
+                        
+                        if (percentage == 100) {
                             $('#recommendation').text('Perfect. Try to break your own record in shorter time.');
                         }
-                        else if (score >= MAX_QUESTION_COUNT - 5) {
+                        else if (percentage >= 95) {
                             $('#recommendation').text('Very good. You are almost there. More practice will take you to a perfect score.');
                         }
-                        else if (score >= MAX_QUESTION_COUNT - 10) {
+                        else if (percentage >= 90) {
                             $('#recommendation').text('Good. You can get to a perfect score. Try again.');
                         }
                         else {
@@ -164,12 +176,46 @@
             $(document).ready(function(){
               $('#practicetest').hide();
               $('#score').hide();
-              $('#time').text('Timer: ' + TOTAL_TIME.toString() + ':00');
               $('#userinfo').show();
             });
 
             
             function nextButtonClick() {
+                
+                TOTAL_TIME = $('#examtime').val();
+                MAX_QUESTION_COUNT = $('#questioncount').val();
+                ROW_NUM = $('#numrows').val();
+                
+                if (TOTAL_TIME > 60) {
+                    alert("Total time for an exam cannot exceed 60 minutes.");
+                    return;
+                }
+                
+                if (TOTAL_TIME < 1) {
+                    alert("Total time for an exam cannot be lower than 1 minute.");
+                    return;
+                }
+                
+                if (MAX_QUESTION_COUNT < 1) {
+                    alert("Maximum questions in an exam should be greater than 0.");
+                    return;
+                }
+                
+                if (MAX_QUESTION_COUNT > 1000) {
+                    alert("Maximum questions in an exam cannot exceed 1000.");
+                    return;
+                }
+                
+                if (ROW_NUM < 3) {
+                    alert("Minimum numbers in a row should be greater than 2.");
+                    return;
+                }
+                
+                if (ROW_NUM > 8) {
+                    alert("Maximum numbers in a row should be less than 9.");
+                    return;
+                }
+                
                 userName = $('#username').val();
                 $('#userinfo').hide();
                 $('#score').hide();
@@ -189,7 +235,11 @@
                     score = score + 1;
                 }
                 
+                $(btn).blur();
+                
                 generateNextQuestion();
+                
+                
             }
             
             function getRndInteger(min, max) {
@@ -206,7 +256,7 @@
                 
                 sum = 0;
                 
-                var totalNumbers = getRndInteger(3, 9);
+                var totalNumbers = getRndInteger(3, ROW_NUM);
                
                 var n1 = getRndInteger(0, 10);
                 var n2 = getRndInteger(-1 * (n1), 10);
