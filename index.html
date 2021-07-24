@@ -216,7 +216,7 @@
                 
                 TOTAL_TIME = $('#examtime').val();
                 MAX_QUESTION_COUNT = parseInt($('#questioncount').val());
-                ROW_NUM = parseInt($('#numrows').val()) + 1;
+                ROW_NUM = parseInt($('#numrows').val());
                 
                 if (TOTAL_TIME > 60) {
                     alert("Total time for an exam cannot exceed 60 minutes.");
@@ -247,6 +247,8 @@
                     alert("Maximum numbers in a row should be less than 9.");
                     return;
                 }
+                
+                ROW_NUM = ROW_NUM + 1;
                 
                 userName = $('#username').val();
                 $('#userinfo').hide();
