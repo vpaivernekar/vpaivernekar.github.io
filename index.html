@@ -101,6 +101,19 @@
                         <p id='incorrect'></p>
                         <br>
                         <p id='recommendation'></p>
+                        <br>
+                        <p>Final Report</p>
+                        <table class="table" id="finalreport">
+                            <thead>
+                                <tr>
+                                  <th>#</th>
+                                  <th>Question</th>
+                                  <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
                     <div class="col-sm">
 
@@ -123,6 +136,8 @@
             var ROW_NUM;
             var userName = '';
             var myTimer;
+            var currentQuestion = '';
+            var report = [];
             
             function startTimer(duration, display) {
                 var timer = duration, minutes, seconds;
@@ -157,7 +172,7 @@
                         var percentage = Math.round((score) * 100 / MAX_QUESTION_COUNT);
                         
                         if (percentage == 100) {
-                            $('#recommendation').text('Perfect. Try to break your own record in shorter time.');
+                            $('#recommendation').text('Perfect. Try to break your own record in a shorter time.');
                         }
                         else if (percentage >= 95) {
                             $('#recommendation').text('Very good. You are almost there. More practice will take you to a perfect score.');
@@ -168,6 +183,21 @@
                         else {
                             $('#recommendation').text('Practice more and you will get there.');
                         }
+                        
+                        $.each(report, function( index, value ) {
+                          var r = '<tr><td>' + (index + 1).toString() + '</td>';
+                          r = r + '<td>' + value[0] + '</td>';
+                          
+                          if (value[1] == 'correct') {
+                            r = r + "<td style='color:green;'>" + value[1] + '</td>';
+                          }
+                          else {
+                            r = r + "<td style='color:red;'>" + value[1] + '</td>';
+                          }
+                        
+                          r = r + '</tr>';
+                          $('#finalreport tbody').append(r);
+                        });
                         
                     }
                 }, 1000);
@@ -233,6 +263,10 @@
             function checkAnswer(btn) {
                 if (sum.toString() == btn.textContent) {
                     score = score + 1;
+                    report.push([currentQuestion, 'correct']);
+                }
+                else {
+                    report.push([currentQuestion, 'wrong']);
                 }
                 
                 $(btn).blur();
@@ -247,6 +281,7 @@
             }
             
             function generateNextQuestion() {
+                currentQuestion = '';
                 questionCounter = questionCounter + 1;
                 if (questionCounter > MAX_QUESTION_COUNT) {
                     return;
@@ -281,48 +316,56 @@
                 if (totalNumbers > 0) {
                     $('#n1').show();
                     $('#n1').text(n1);
+                    currentQuestion = currentQuestion + n1.toString() + ' '; 
                     sum = sum + n1;
                 }
                 
                 if (totalNumbers > 1) {
                     $('#n2').show();
                     $('#n2').text(n2);
+                    currentQuestion = currentQuestion + n2.toString() + ' '; 
                     sum = sum + n2;
                 }
                 
                 if (totalNumbers > 2) {
                     $('#n3').show();
                     $('#n3').text(n3);
+                    currentQuestion = currentQuestion + n3.toString() + ' '; 
                     sum = sum + n3;
                 }
                 
                 if (totalNumbers > 3) {
                     $('#n4').show();
                     $('#n4').text(n4);
+                    currentQuestion = currentQuestion + n4.toString() + ' '; 
                     sum = sum + n4;
                 }
                 
                 if (totalNumbers > 4) {
                     $('#n5').show();
                     $('#n5').text(n5);
+                    currentQuestion = currentQuestion + n5.toString() + ' '; 
                     sum = sum + n5;
                 }
                 
                 if (totalNumbers > 5) {
                     $('#n6').show();
                     $('#n6').text(n6);
+                    currentQuestion = currentQuestion + n6.toString() + ' '; 
                     sum = sum + n6;
                 }
                 
                 if (totalNumbers > 6) {
                     $('#n7').show();
                     $('#n7').text(n7);
+                    currentQuestion = currentQuestion + n7.toString() + ' '; 
                     sum = sum + n7;
                 }
                 
                 if (totalNumbers > 7) {
                     $('#n8').show();
                     $('#n8').text(n8);
+                    currentQuestion = currentQuestion + n8.toString() + ' '; 
                     sum = sum + n8;
                 }
                 
