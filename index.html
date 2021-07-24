@@ -215,8 +215,8 @@
             function nextButtonClick() {
                 
                 TOTAL_TIME = $('#examtime').val();
-                MAX_QUESTION_COUNT = $('#questioncount').val();
-                ROW_NUM = $('#numrows').val();
+                MAX_QUESTION_COUNT = parseInt($('#questioncount').val());
+                ROW_NUM = parseInt($('#numrows').val()) + 1;
                 
                 if (TOTAL_TIME > 60) {
                     alert("Total time for an exam cannot exceed 60 minutes.");
@@ -294,7 +294,7 @@
                 sum = 0;
                 
                 var totalNumbers = getRndInteger(3, ROW_NUM);
-               
+                
                 var n1 = getRndInteger(0, 10);
                 var n2 = getRndInteger(-1 * (n1), 10);
                 var n3 = getRndInteger(-1 * Math.floor((n1 + n2)/10), 10);
