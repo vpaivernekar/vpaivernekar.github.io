@@ -93,17 +93,28 @@
                     </div>
                     <div class="col-sm">
                         <p id='addressuser'></p>
-                        <br>
-                        <p id='questions'></p>
-                        <br>
-                        <p id='finalscore'></p>
-                        <br>
-                        <p id='incorrect'></p>
-                        <br>
-                        <p id='recommendation'></p>
-                        <br>
-                        <p>Final Report</p>
-                        <table class="table" id="finalreport">
+                        
+                        <table class="table table-bordered" id="finalsummary">
+                            <tr>
+                                <th>Questions Given</th>
+                                <td id='questions'></td>
+                            </tr>
+                            <tr>
+                                <th>Score</th>
+                                <td id='finalscore'></td>
+                            </tr>
+                            <tr>
+                                <th>Incorrect Answers</th>
+                                <td id='incorrect'></td>
+                            </tr>
+                            <tr>
+                                <th>Recommendation</th>
+                                <td id='recommendation'></td>
+                            </tr>
+                        </table>
+                        
+                        <p><b>Detailed Report</b></p>
+                        <table class="table table-striped table-bordered" id="finalreport">
                             <thead>
                                 <tr>
                                   <th>#</th>
@@ -164,9 +175,9 @@
                         $('#userinfo').hide();
                         
                         $('#addressuser').text('Dear ' + userName + ', below is your score:');
-                        $('#questions').text('Total Questions Given:' + questionCounter.toString());
-                        $('#finalscore').text('Final Score:' + score.toString());
-                        $('#incorrect').text('Number of incorrect answers:' + (questionCounter - score).toString());
+                        $('#questions').text(questionCounter.toString());
+                        $('#finalscore').text(score.toString());
+                        $('#incorrect').text((questionCounter - score).toString());
                         
                         timer = 0;
                         
